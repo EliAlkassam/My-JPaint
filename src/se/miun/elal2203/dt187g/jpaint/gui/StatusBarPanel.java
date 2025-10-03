@@ -89,6 +89,10 @@ public class StatusBarPanel extends JPanel {
 	public void updateCoordinates(int x, int y) {
 		 coordinates.setText( x +"," + y);
 	}
+
+	public Color getSelectedColor(){
+		return selectedColor.getBackground();
+	}
 	
 	/*
 	 *  Uppdatera JPanel-objektet som visar vald färg med den nya färgen.
@@ -97,5 +101,7 @@ public class StatusBarPanel extends JPanel {
 	
 		selectedColor.setBackground(color);
 	}
+	
+	
 
 }

@@ -65,6 +65,7 @@ public class Drawing implements Drawable {
     public String getName(){
         return name;
     }
+
     public String getAuthor(){
         return author;
     }
@@ -74,6 +75,12 @@ public class Drawing implements Drawable {
             shapes.add(shape);
         }
     }
+
+    public void removeShape(int index){
+        
+        shapes.remove(index);
+    }
+
     public int getSize(){
         return shapes.size(); 
     }
@@ -112,7 +119,9 @@ public class Drawing implements Drawable {
 
     @Override
     public void draw(Graphics g) {
-        
+        for (Shape shape : shapes) {
+            shape.draw(g);
+        }
     }
 
     public String toString(){

@@ -161,6 +161,7 @@ public class JPaintFrame extends JFrame {
 			public void mousePressed(MouseEvent e) {
 
 				ColorPanel colorPanel = (ColorPanel) e.getSource();
+				drawingPanel.setdrawColor(colorPanel.getColor());
 				statusBarPanel.updateSelectedColor(colorPanel.getBackground());
 			}
 		 });
@@ -193,7 +194,6 @@ public class JPaintFrame extends JFrame {
 
 	public void setDrawingTitle(String name, String author) throws DrawingException {
 		
-		// try {
 			drawingTitle = APP_NAME;
 			
 			String n = name.trim();
@@ -219,8 +219,19 @@ public class JPaintFrame extends JFrame {
 		}
 		return this.drawingTitle;
 	}
-
+	
 	class CustomMouseAdapter extends MouseAdapter {
+		
+		@Override
+		public void mouseMoved(MouseEvent e) {
+	
+			// Uppdatera koordinater i statusBarPanel
+			 int x = e.getX();
+			 int y = e.getY();
+			statusBarPanel.updateCoordinates(x,y);
+			// statusBarPanel.updateCoordinates(e.getX(),e.getY());
+	
+		}
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
@@ -229,10 +240,17 @@ public class JPaintFrame extends JFrame {
 				int x = e.getX();
 				int y = e.getY();
 				statusBarPanel.updateCoordinates(x,y);
+				
+				boolean isActive = true;
+				drawingPanel.setDrawIsActive(isActive);
+				drawingPanel.setEndPoint(x, y);
+
+				repaint();
 			} else {
 				// Nollställ koordinater i statusBarPanel
 				statusBarPanel.updateCoordinates(0, 0);
 			}
+			//drawingPanel.getDrawIsActive();
 		}
 
 		@Override
@@ -243,15 +261,31 @@ public class JPaintFrame extends JFrame {
 		}
 
 		@Override
-		public void mouseMoved(MouseEvent e) {
-	
-			// Uppdatera koordinater i statusBarPanel
-			 int x = e.getX();
-			 int y = e.getY();
-			statusBarPanel.updateCoordinates(x,y);
-			// statusBarPanel.updateCoordinates(e.getX(),e.getY());
+		public void mousePressed(MouseEvent e){
+			//drawingPanel.setdrawColor();
+			//drawingPanel.setdrawColor(selectedColor); 
+			
+			 Color color = drawingPanel.getDrawColor();
+			 drawingPanel.setdrawColor(color);
+
+			System.out.println("xxxx = " + e.getX()+ "yyyyy="+ e.getY());
+			drawingPanel.setStartPoint(e.getX(), e.getY());			
+			//  boolean isActive = true;
+			//  drawingPanel.setDrawIsActive(isActive);
+			
+			//repaint();
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e){
+
+			// boolean isActive = true;
+			// drawingPanel.setDrawIsActive(isActive);
+			drawingPanel.addShape();
+			drawingPanel.setEndPoint(e.getX(), e.getY());
 
 		}
+
 	}
 
 
