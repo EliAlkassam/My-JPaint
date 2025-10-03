@@ -43,7 +43,7 @@ public class DrawingPanel extends JPanel {
 		drawing = new Drawing();
 		setBackground(Color.white);
 
-		 //activeShape = "Rectangle";
+		// activeShape = "Circle";
 		// drawIsActive = false;
 		drawColor = Color.BLUE;
 	}

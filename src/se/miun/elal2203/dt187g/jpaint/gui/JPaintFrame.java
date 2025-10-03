@@ -265,8 +265,12 @@ public class JPaintFrame extends JFrame {
 			//drawingPanel.setdrawColor();
 			//drawingPanel.setdrawColor(selectedColor); 
 			
-			 Color color = drawingPanel.getDrawColor();
-			 drawingPanel.setdrawColor(color);
+			// String rectangle = "Rectangle";
+			// drawingPanel.setActiveShape(rectangle);
+		drawingPanel.getActiveShapes();
+
+			Color color = drawingPanel.getDrawColor();
+			drawingPanel.setdrawColor(color);
 
 			System.out.println("xxxx = " + e.getX()+ "yyyyy="+ e.getY());
 			drawingPanel.setStartPoint(e.getX(), e.getY());			
