@@ -6,10 +6,13 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.nio.ReadOnlyBufferException;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -123,6 +126,24 @@ public class JPaintFrame extends JFrame {
 		comboBox.setSelectedItem(shapes[0]);
 		comboBox.setPreferredSize(new Dimension(100,0));
 
+		comboBox.addActionListener( new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				JComboBox<String> cb = (JComboBox<String>) e.getSource();
+				String selectedShape = (String) cb.getSelectedItem();
+				System.out.println("den valda är " + selectedShape);
+
+				if (selectedShape == "Rectangle") {
+					drawingPanel.setActiveShape(selectedShape);
+				}
+				if (selectedShape == "Circle") {
+					drawingPanel.setActiveShape(selectedShape);
+				}
+			}
+		});
+
+		
+
 		/*
 		 * 9.
 		 * 9.1 Initialisera DrawingPanel
@@ -165,6 +186,7 @@ public class JPaintFrame extends JFrame {
 				statusBarPanel.updateSelectedColor(colorPanel.getBackground());
 			}
 		 });
+		 
 
 		/*
 		 * 12.
@@ -186,13 +208,32 @@ public class JPaintFrame extends JFrame {
 
 		MenuManager menuManager = new MenuManager(this, drawingPanel);
         setJMenuBar(menuManager.getMenu());
+
+
+		
+		statusBarPanel.setOnChangeListener(new OnChangeListener <StatusBarPanel>(){
+			@Override
+			public void onChange(StatusBarPanel object){
+				drawingPanel.setdrawColor(object.getSelectedColor());
+			}
+		});
+		
+		// OnChangeListener <StatusbarPanel> l = new OnChangeListener <StatusBarPanel> (){
+		// 	@Override
+		// 	public void onChange(StatusBarPanel object){
+		// 		drawingPanel.setdrawColor(object.getSelectedColor());
+		// 	}
+		// 	statusBarPanel.setOnChangeListener(l);
+		// };
+
+
 	}
 
 	public void updateHeader(){
 		setTitle(drawingTitle);
 	}
 
-	public void setDrawingTitle(String name, String author) throws DrawingException {
+	public void setDrawingTitle(String name, String author) {
 		
 			drawingTitle = APP_NAME;
 			
@@ -207,21 +248,21 @@ public class JPaintFrame extends JFrame {
 			}
 			if (n.isEmpty() && !a.isEmpty() ) {
 				drawingTitle += "-" + "[untitled drawing]" + " " + "by"+ " " + a;
-				throw new DrawingException("setDrawingTitle() -> Could not set drawingtitle");
 			}
 			updateHeader();
 	}
 
-	public String getDrawingTitle() throws DrawingException{
-
-		if (this.drawingTitle == null || this.drawingTitle.isEmpty()) {
-			throw new DrawingException ("getDrawingTitle() -> Could not get drawingtitle");
-		}
+	public String getDrawingTitle(){
 		return this.drawingTitle;
 	}
-	
+
+	 @FunctionalInterface
+		public interface OnChangeListener <T> {
+			public void onChange( T listener);
+		}
+
 	class CustomMouseAdapter extends MouseAdapter {
-		
+
 		@Override
 		public void mouseMoved(MouseEvent e) {
 	
@@ -230,7 +271,6 @@ public class JPaintFrame extends JFrame {
 			 int y = e.getY();
 			statusBarPanel.updateCoordinates(x,y);
 			// statusBarPanel.updateCoordinates(e.getX(),e.getY());
-	
 		}
 
 		@Override
@@ -241,8 +281,7 @@ public class JPaintFrame extends JFrame {
 				int y = e.getY();
 				statusBarPanel.updateCoordinates(x,y);
 				
-				boolean isActive = true;
-				drawingPanel.setDrawIsActive(isActive);
+				drawingPanel.setDrawIsActive(true);
 				drawingPanel.setEndPoint(x, y);
 
 				repaint();
@@ -250,48 +289,23 @@ public class JPaintFrame extends JFrame {
 				// Nollställ koordinater i statusBarPanel
 				statusBarPanel.updateCoordinates(0, 0);
 			}
-			//drawingPanel.getDrawIsActive();
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// Nollställ koordinater i statusBarPanel
 			statusBarPanel.updateCoordinates(0, 0);
-
 		}
 
 		@Override
-		public void mousePressed(MouseEvent e){
-			//drawingPanel.setdrawColor();
-			//drawingPanel.setdrawColor(selectedColor); 
-			
-			// String rectangle = "Rectangle";
-			// drawingPanel.setActiveShape(rectangle);
-		drawingPanel.getActiveShapes();
-
-			Color color = drawingPanel.getDrawColor();
-			drawingPanel.setdrawColor(color);
-
-			System.out.println("xxxx = " + e.getX()+ "yyyyy="+ e.getY());
+		public void mousePressed(MouseEvent e){			
 			drawingPanel.setStartPoint(e.getX(), e.getY());			
-			//  boolean isActive = true;
-			//  drawingPanel.setDrawIsActive(isActive);
-			
-			//repaint();
 		}
 		
 		@Override
 		public void mouseReleased(MouseEvent e){
-
-			// boolean isActive = true;
-			// drawingPanel.setDrawIsActive(isActive);
 			drawingPanel.addShape();
 			drawingPanel.setEndPoint(e.getX(), e.getY());
-
 		}
-
 	}
-
-
-
 }

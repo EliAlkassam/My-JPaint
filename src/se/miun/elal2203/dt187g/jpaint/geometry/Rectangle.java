@@ -1,6 +1,8 @@
 package se.miun.elal2203.dt187g.jpaint.geometry;
 
 
+import java.awt.Color;
+
 /**
     * Rectangle is a subclass of Shape that overrides all methods from Shape.
     * Calls the subclass ctor with indata (Point p, String color and then calls its "sister" ctor that takes (double x, double y, String color) 
@@ -75,6 +77,18 @@ public class Rectangle extends Shape { //extends- ärva
 
     @Override
     public void draw(Graphics g) {
+
+        int x = (int) points.get(0).getX();
+        int y = (int) points.get(0).getY();
+
+        String color = this.getColor();
+        Color c = Color.decode(color);
+        g.setColor(c);
+        
+        int width = (int) getWidth();
+        int height = (int) getHeight();
+
+        g.fillRect(x, y, width, height);
     }
 
    //implementation to count circumference

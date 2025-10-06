@@ -43,8 +43,7 @@ public class DrawingPanel extends JPanel {
 		drawing = new Drawing();
 		setBackground(Color.white);
 
-		// activeShape = "Circle";
-		// drawIsActive = false;
+		activeShape = "Rectangle";
 		drawColor = Color.BLUE;
 	}
 	
@@ -53,7 +52,6 @@ public class DrawingPanel extends JPanel {
 		setBackground(background);
 	}
 
-	
 	public Drawing getDrawing() throws DrawingException{
 		
 		if (drawing == null ) {
@@ -61,7 +59,6 @@ public class DrawingPanel extends JPanel {
 		} 
 		return drawing;
 	}
-
 
 	public void setDrawing(Drawing drawing) throws DrawingException{
 
@@ -111,8 +108,6 @@ public class DrawingPanel extends JPanel {
 	public void removeShape(int index){
 		drawing.removeShape(index);
 	}
-
-	
 
 	// Freee
 	

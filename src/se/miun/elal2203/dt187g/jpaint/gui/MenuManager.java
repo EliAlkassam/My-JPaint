@@ -187,7 +187,55 @@ public class MenuManager {
 	private ActionListener showInfoAction() {
 		return al -> {
 			// TODO for assignment 5
+
+			try {
+				Drawing currentDrawing = drawingPanel.getDrawing();
+
+				int amountOfShapes = currentDrawing.getSize();
+				double area = currentDrawing.getTotalArea();
+				double circumference = currentDrawing.getTotalArea();
+
+				String message = getInfoName() + " " + "\n" +
+				"Number of Shapes:" + " " + amountOfShapes + "\n" + 
+				"Total Area:" + " " + area + "\n" +
+				"Total circumference:" + " " + circumference;
+
+				 JOptionPane.showMessageDialog(drawingPanel, message ,"Info", JOptionPane.INFORMATION_MESSAGE);
+
+				 //JOptionPane.showMessageDialog(drawingPanel, "Number of Shapes: " + amountOfShapes, "Info", JOptionPane.INFORMATION_MESSAGE);
+			} catch (DrawingException e) {
+				// TODO: handle exception
+			}
 		};
+	}
+
+	private String getInfoName(){
+		
+		String finalString = "";
+		try {
+			Drawing currentDrawing = drawingPanel.getDrawing();
+			String name = currentDrawing.getName();
+			String author = currentDrawing.getAuthor();
+
+			String n = name.trim();
+			String a = author.trim();
+
+			if (n.isEmpty() && a.isEmpty()) {
+				return finalString = "[Unnamed Drawing]";
+			}
+			if (!n.isEmpty() && a.isEmpty()) {
+				return finalString = n;
+			}
+			if (n.isEmpty() && !a.isEmpty()) {
+				return finalString = "[Unnamed Drawing]" + " " + "by" + " " + a;
+			}
+			else{
+				return finalString = n + " " + "by" + " " + a;
+			}
+		} catch (DrawingException e) {
+			// TODO: handle exception
+		}
+		return finalString;
 	}
 
 	private ActionListener createLoadAction() {

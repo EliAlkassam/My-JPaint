@@ -1,5 +1,8 @@
 package se.miun.elal2203.dt187g.jpaint.geometry;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 
 /**
@@ -13,12 +16,10 @@ import java.awt.Graphics;
     * @version 1.0 
     */
 
-
 public class Circle extends Shape {
 
     protected final double pi =  3.14159265;
-
-
+    
     // ctor- same principle as Rectangle
     public Circle(Point p, String color) {
         super(p, color);
@@ -32,11 +33,8 @@ public class Circle extends Shape {
             return 0;
         }
 
-        // double x = points.get(1).getX() - points.get(0).getX();
-        // double y = points.get(1).getY() - points.get(0).getY();
         double x = ((Point)this.points.get(1)).getX() - ((Point)this.points.get(0)).getX();
-         double y = ((Point)this.points.get(1)).getY() - ((Point)this.points.get(0)).getY();
-
+        double y = ((Point)this.points.get(1)).getY() - ((Point)this.points.get(0)).getY();
 
         return Math.sqrt(x * x  + y * y);
     }
@@ -49,6 +47,18 @@ public class Circle extends Shape {
     @Override
     public void draw(Graphics g) {
 
+        int x = (int) points.get(0).getX() - (int) getRadius() ;
+        int y = (int) points.get(0).getY() - (int) getRadius();
+        int diameter = (int) getRadius() * 2;
+    
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        String color = this.getColor();
+        Color c = Color.decode(color);
+        
+        g2.setColor(c);
+        g2.fillOval(x, y, diameter, diameter) ;
     }
 
     @Override
@@ -56,9 +66,7 @@ public class Circle extends Shape {
          if (!hasEndpoint()) {
             return 0;
         }
-
         double radius = getRadius();
-
         double circumference = (2 * pi * radius) ;
         return circumference;
     }
@@ -91,11 +99,6 @@ public class Circle extends Shape {
         }
         return false;
     }
-    
-    // @Override
-    // public boolean hasEndpoint() {
-    //    return points.get(1) != null;
-    // }
 
     public String toString(){
 

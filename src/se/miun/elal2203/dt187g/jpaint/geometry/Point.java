@@ -12,12 +12,10 @@ public class Point{
 
     protected double x, y;
 
-    
     public Point() {
         this.x = 0;
         this.y = 0;
     }
-
 
     public Point (double x, double y){
         setX(x);
@@ -44,17 +42,5 @@ public class Point{
     public String toString(){
        // Point p = new Point(23.2, 19.2);
         return "["+ x +", " + y + "]";
-        //System.out.println(p);
-
     }
-
-    
-
-
-
-
-
-
-
-
 }

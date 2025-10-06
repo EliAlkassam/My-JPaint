@@ -1,7 +1,6 @@
 package se.miun.elal2203.dt187g.jpaint;
 
 public interface Drawable{
-
     /**
     * Interface that draws the shapes
     *

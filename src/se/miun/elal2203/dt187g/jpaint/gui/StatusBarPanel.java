@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import se.miun.elal2203.dt187g.jpaint.gui.JPaintFrame.OnChangeListener;
+
 /**
 	 * This class handles and updates the componements coordinates for x and y, and the selected color that the user choose  
 	
@@ -24,6 +26,8 @@ public class StatusBarPanel extends JPanel {
 	private JPanel selectedColor;
 	private JPanel leftPanel;
 	private JPanel rightPanel;
+
+	private OnChangeListener onChangeListenerInterface; 
 
 	public StatusBarPanel() {
 		
@@ -89,7 +93,7 @@ public class StatusBarPanel extends JPanel {
 	public void updateCoordinates(int x, int y) {
 		 coordinates.setText( x +"," + y);
 	}
-
+	
 	public Color getSelectedColor(){
 		return selectedColor.getBackground();
 	}
@@ -98,10 +102,13 @@ public class StatusBarPanel extends JPanel {
 	 *  Uppdatera JPanel-objektet som visar vald färg med den nya färgen.
 	 */
 	public void updateSelectedColor(Color color) {
-	
+		
 		selectedColor.setBackground(color);
+		onChangeListenerInterface.onChange(this);
+	}
+
+	public void setOnChangeListener(OnChangeListener <StatusBarPanel> statusbarPanel){
+		onChangeListenerInterface = statusbarPanel;
 	}
 	
-	
-
 }
