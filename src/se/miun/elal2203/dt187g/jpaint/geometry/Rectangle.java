@@ -30,6 +30,12 @@ public class Rectangle extends Shape { //extends- ärva
         this( new Point (x,y), color);
     }
 
+    public Rectangle(double x1, double y1,double x2, double y2, String color){
+        //systerkonstruktor till ctor1 där den återanvänder koden Rectangle(Point p, String color)
+        this( new Point (x1,y1), color);
+        addPoint(x2, y2);
+    }
+
     // genom att använda this() och sedan anropa super() slipper jag duplicera kod
 
 

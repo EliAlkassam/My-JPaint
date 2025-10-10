@@ -111,6 +111,10 @@ public class Drawing implements Drawable {
         return totalArea;
     }
 
+    public List<Shape> getShapes(){
+        return shapes;
+    }
+
 
     @Override
     public void draw() {

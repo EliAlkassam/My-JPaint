@@ -63,6 +63,10 @@ public abstract class Shape implements Drawable {
         this.addPoint(point);
         // this( new Point(point));    
     }
+
+    public ArrayList<Point> getPoints(){
+        return points;
+    }
     
     public abstract boolean hasEndpoint();
     
