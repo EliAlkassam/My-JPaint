@@ -20,22 +20,27 @@ public class AppStart {
 			public void run() {
 				new JPaintFrame().setVisible(true);
 				Drawing drawing = new Drawing();
-				FileHandler fileHandler = new FileHandler();
+				//FileHandler fileHandler = new FileHandler();
 
 				Rectangle r1 = new Rectangle(233,177,425, 362,"#0000ff");
-				Rectangle r2 = new Rectangle(744,151,861,259,"#0000ff");
-				// r1.addPoint(425, 362);
-				drawing.addShape(r1);
-				// r1.addPoint(425, 362);
-				drawing.addShape(r2);
-
-				Circle c = new Circle(744,151,861, 259,"#0000ff");
-				//c.addPoint(861, 259);
-				drawing.addShape(c);
-				fileHandler.save(drawing,"hej");
 				
-				//fileHandler.load("hej");
+				Rectangle r2 = new Rectangle(744,151,861,259,"#0000ff");
+				Circle c = new Circle(744,151,861, 259,"#0000ff");
+				drawing.addShape(r1);
+				drawing.addShape(r2);
+				drawing.addShape(c);
 
+		
+				//FileHandler.save(drawing,"MyFirstFile");
+				
+				try {
+					FileHandler.load("MyFirstFile.shape");
+					
+				} catch (Exception e) {
+					System.err.println("Failed to load: load():" + e.toString());
+               		e.printStackTrace();
+				}
+				
 			}
 		});
 	}

@@ -1,5 +1,6 @@
 package se.miun.elal2203.dt187g.jpaint.gui;
 
+import java.awt.List;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
@@ -8,6 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import se.miun.elal2203.dt187g.jpaint.Drawing;
+import se.miun.elal2203.dt187g.jpaint.geometry.Shape;
 
 /**
  * Manages the items in Menu.
@@ -204,7 +206,8 @@ public class MenuManager {
 
 				 //JOptionPane.showMessageDialog(drawingPanel, "Number of Shapes: " + amountOfShapes, "Info", JOptionPane.INFORMATION_MESSAGE);
 			} catch (DrawingException e) {
-				// TODO: handle exception
+				JOptionPane.showMessageDialog(drawingPanel, e.getMessage());
+				e.printStackTrace();			
 			}
 		};
 	}
@@ -233,20 +236,42 @@ public class MenuManager {
 				return finalString = n + " " + "by" + " " + a;
 			}
 		} catch (DrawingException e) {
-			// TODO: handle exception
-		}
+				JOptionPane.showMessageDialog(drawingPanel, e.getMessage());
+				e.printStackTrace();		
+			}
 		return finalString;
 	}
 
 	private ActionListener createLoadAction() {
 		return al -> {
+			try {
+				String fileName = JOptionPane.showInputDialog(drawingPanel, "Enter file name to load", "Load file", JOptionPane.INFORMATION_MESSAGE);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 			// TODO for assignment 6
 		};
 	}
 
 	private ActionListener createSaveAction() {
 		return al -> {
-			// TODO for assignment 6
+			try {
+
+				String fileName = JOptionPane.showInputDialog(drawingPanel, "*Enter file name" );
+				if (fileName == null) {
+					return;
+				}
+				while (fileName.isEmpty() || fileName.isEmpty()) {
+					JOptionPane.showInputDialog(drawingPanel, "File must have a name" );					
+				}
+				
+				FileHandler.save(drawingPanel.getDrawing(), fileName);
+			
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(drawingPanel, e.getMessage());
+				e.printStackTrace();
+			}
+
 		};
 	}
     
