@@ -1,14 +1,25 @@
 package se.miun.elal2203.dt187g.jpaint.gui;
 
-import java.awt.List;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JMenu;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.KeyStroke;
 
 import se.miun.elal2203.dt187g.jpaint.Drawing;
+import se.miun.elal2203.dt187g.jpaint.geometry.Circle;
+import se.miun.elal2203.dt187g.jpaint.geometry.Rectangle;
 import se.miun.elal2203.dt187g.jpaint.geometry.Shape;
 
 /**
@@ -22,8 +33,12 @@ public class MenuManager {
     private JPaintFrame frame;
     private DrawingPanel drawingPanel;
     private Menu menu;
-    
 
+	private Predicate<Shape> circleFilter = s -> s instanceof Circle;
+	private Predicate<Shape> rectangleFilter = s -> s instanceof Rectangle;
+	private Predicate<Shape> allFilter = s -> s instanceof Shape;
+
+	
     public MenuManager(JPaintFrame frame, DrawingPanel drawingPanel) {
         this.frame = frame;
         this.drawingPanel = drawingPanel;
@@ -38,7 +53,7 @@ public class MenuManager {
     private void createMenu() {
         createFileMenu();
         createEditMenu();
-       // createFilterMenu(); // Empty for now
+        createFilterMenu(); 
     }
 
     private void createFileMenu() {
@@ -83,9 +98,53 @@ public class MenuManager {
 	}
     
     private void createFilterMenu() {
-		// TODO for assignment 6
-	}
+
+
+		JRadioButton allButton = new JRadioButton("All");
+		allButton.setSelected(true);
+		JRadioButton circleButton = new JRadioButton("Circle(s)");
+		circleButton.setSelected(true);
+		JRadioButton rectangleButton = new JRadioButton("Rectangle(s)");
+		rectangleButton.setSelected(true);
+
+		drawingPanel.setShapeFilter(allFilter);
+
+		 //register listner for the radio buttons
+		 allButton.addActionListener(event -> {
+			drawingPanel.setShapeFilter(allFilter);
+		});		
+		 
+		rectangleButton.addActionListener(event -> {
+			drawingPanel.setShapeFilter(rectangleFilter);
+		});
+		 circleButton.addActionListener(event -> {
+			drawingPanel.setShapeFilter(circleFilter);
+ 		});
+
+		@SuppressWarnings("serial")
+ 		List<JRadioButton> radioButtons = new 
+		ArrayList<JRadioButton>() {
+			{
+			add(allButton);
+			add(circleButton);
+			add(rectangleButton);
+			}
+		};
+		
+		JMenu jMenu = new JMenu("Filter");
+		ButtonGroup group = new ButtonGroup();
+		
+		for (var rb : radioButtons) {
+			jMenu.add(rb);
+			group.add(rb);
+			}
+		menu.add(jMenu);
+}
     
+
+
+
+
     /*
      * Flera av metoderna nedan kommer anropa JOptionPane.showInputDialog(...).
      * Denna metod returnerar en String. Tänk på att om användaren trycker på
@@ -101,6 +160,7 @@ public class MenuManager {
     private ActionListener createNewDrawingAction() {
 		return al -> {
 			
+			frame.repaint();
 			Drawing newDrawing = new Drawing();
 			
 			String drawingName = JOptionPane.showInputDialog(drawingPanel, "Enter name of the DRAWAING");
@@ -246,29 +306,53 @@ public class MenuManager {
 		return al -> {
 			try {
 				String fileName = JOptionPane.showInputDialog(drawingPanel, "Enter file name to load", "Load file", JOptionPane.INFORMATION_MESSAGE);
-			} catch (Exception e) {
-				// TODO: handle exception
+				
+				try {
+					Drawing drawing = FileHandler.load(fileName);
+					if (drawing != null) {
+						
+						String name = drawing.getName();
+						String author = drawing.getAuthor();
+						
+						
+						frame.setDrawingTitle(name, author);
+						drawingPanel.setDrawing(drawing);
+						frame.repaint();
+					}
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(drawingPanel,"Could not find the file:" + " " + e.getMessage());
+				e.printStackTrace();	
 			}
-			// TODO for assignment 6
+			} catch (DrawingException e) {
+				e.printStackTrace();
+				e.getMessage();
+			}
+			frame.repaint();
 		};
 	}
 
 	private ActionListener createSaveAction() {
 		return al -> {
+			String fileName = JOptionPane.showInputDialog(drawingPanel, "*Enter file name", "Save file", JOptionPane.INFORMATION_MESSAGE );
+			if (fileName == null) {
+				return;
+			}
+			while ( fileName == null || fileName.isBlank()) {
+				JOptionPane.showInputDialog(drawingPanel, "File must have a name" );					
+			}
+			
 			try {
+				// Drawing drawing = new Drawing();
+				// String name = drawing.getName();
+				// String author = drawing.getAuthor();
+				// frame.setDrawingTitle(name, author);
 
-				String fileName = JOptionPane.showInputDialog(drawingPanel, "*Enter file name" );
-				if (fileName == null) {
-					return;
-				}
-				while (fileName.isEmpty() || fileName.isEmpty()) {
-					JOptionPane.showInputDialog(drawingPanel, "File must have a name" );					
-				}
 				
 				FileHandler.save(drawingPanel.getDrawing(), fileName);
+				
 			
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(drawingPanel, e.getMessage());
+				JOptionPane.showMessageDialog(drawingPanel, "Could not save file"+ " " + e.getMessage());
 				e.printStackTrace();
 			}
 

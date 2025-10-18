@@ -19,6 +19,7 @@ public class AppStart {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				new JPaintFrame().setVisible(true);
+				
 				Drawing drawing = new Drawing();
 				//FileHandler fileHandler = new FileHandler();
 
@@ -31,15 +32,15 @@ public class AppStart {
 				drawing.addShape(c);
 
 		
-				//FileHandler.save(drawing,"MyFirstFile");
+				FileHandler.save(drawing,"MyFirstFile");
 				
-				try {
-					FileHandler.load("MyFirstFile.shape");
+				// try {
+				// 	FileHandler.load("oo");
 					
-				} catch (Exception e) {
-					System.err.println("Failed to load: load():" + e.toString());
-               		e.printStackTrace();
-				}
+				// } catch (Exception e) {
+				// 	System.err.println("Failed to load: load():" + e.toString());
+               	// 	e.printStackTrace();
+				// }
 				
 			}
 		});

@@ -129,16 +129,15 @@ public class JPaintFrame extends JFrame {
 		comboBox.addActionListener( new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e){
-				JComboBox<String> cb = (JComboBox<String>) e.getSource();
-				String selectedShape = (String) cb.getSelectedItem();
-				System.out.println("den valda är " + selectedShape);
+				 JComboBox<String> cb = (JComboBox<String>) e.getSource();
+				 String selectedShape = (String) cb.getSelectedItem();
 
-				if (selectedShape == "Rectangle") {
-					drawingPanel.setActiveShape(selectedShape);
-				}
-				if (selectedShape == "Circle") {
-					drawingPanel.setActiveShape(selectedShape);
-				}
+				 if (selectedShape == "Rectangle") {
+				 	drawingPanel.setActiveShape(selectedShape);
+				 }
+				 if (selectedShape == "Circle") {
+				 	drawingPanel.setActiveShape(selectedShape);
+				 }
 			}
 		});
 
@@ -299,13 +298,14 @@ public class JPaintFrame extends JFrame {
 
 		@Override
 		public void mousePressed(MouseEvent e){			
-			drawingPanel.setStartPoint(e.getX(), e.getY());			
+			drawingPanel.setStartPoint(e.getX(), e.getY());	
 		}
 		
 		@Override
 		public void mouseReleased(MouseEvent e){
-			drawingPanel.addShape();
 			drawingPanel.setEndPoint(e.getX(), e.getY());
+			drawingPanel.addShape();
+			drawingPanel.setDrawIsActive(false);
 		}
 	}
 }

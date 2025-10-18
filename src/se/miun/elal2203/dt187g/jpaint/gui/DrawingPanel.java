@@ -5,6 +5,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.JPanel;
 
@@ -33,10 +38,13 @@ public class DrawingPanel extends JPanel {
 	private boolean drawIsActive;
 	private String activeShape;
 	
+	private Predicate<Shape> shapeFilter;
+	
 	private int x1;
 	private int x2;
 	private int y1;
 	private int y2;
+
 
 
 	public DrawingPanel() {
@@ -110,6 +118,11 @@ public class DrawingPanel extends JPanel {
 	}
 
 	// Freee
+
+	public void setShapeFilter(Predicate<Shape> shapeFilter){
+		this.shapeFilter = shapeFilter;
+		repaint();
+	}
 	
 	public void addShape() {
 		switch (activeShape) {
@@ -148,9 +161,45 @@ public class DrawingPanel extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
+		
 		super.paintComponent(g);
-		drawing.draw(g);
+		
 		Graphics2D g2 = (Graphics2D) g;
+		// om shapeFilter inte är null
+		
+
+			// gör en lista av shape som hämtar alla shapes från drawing o gör till en stream
+			// filtrera efter predicate shapeFilter
+			// för varje shape i shapeFilter -ritaq
+		
+			List<Shape> streamShapes = drawing.getShapes();
+			streamShapes.stream().
+						filter(shapeFilter).
+						forEach(s-> s.draw(g2));
+
+			
+
+		
+			// streamShapes.forEach(s -> s.draw(g));
+			//   //  	System.out.println("här" + streamShapes);
+			//   //  	streamShapes = streamShapes.filter()
+
+		
+		
+		// 	streamShapes.stream()
+		// 	.filter(shapeFilter);
+		// 	.collect((Collectors.toList()));
+		
+		// 	if (shapeFilter != null) {
+			//   //  	streamShapes = streamShapes.filter()
+			// 		  streamShapes.forEach(s -> s.draw(g));
+			//   //  	System.out.println("här" + streamShapes);
+			// 	}
+			
+		//var e = shapeFilter ? streamShapes.forEach(s -> s.draw(g)) : drawing.draw(g);
+				
+			
+		//drawing.draw(g);
 		if (drawIsActive) {
 			g2.setColor(drawColor);
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

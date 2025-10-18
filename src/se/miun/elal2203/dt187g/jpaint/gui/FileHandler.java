@@ -15,6 +15,7 @@ import java.util.Scanner;
 
 import javax.print.DocFlavor.STRING;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import java.io.*;
 import java.net.URI;
@@ -84,45 +85,30 @@ public class FileHandler {
                 System.err.println("Save failed:" + e.toString());
                 e.printStackTrace();
             }
-                // String row =  br.readLine();
-                // System.out.println("row:" + row);
-
-                // while (row != null) {
-                // System.out.println(row);
-                // row = br.readLine();
-
-
-            // PrintWriter pw = new PrintWriter(bw);
-            // pw.println("test");
-            // pw.println("aaaa");
-            // pw.close();
-            
-            // ArrayList<String> listStrings = new ArrayList();
-            // listStrings.add(drawing.getAuthor());
-            // listStrings.add(drawing.getName());
-            // for (String string : listStrings) {
-                // bw.newLine();
-                
-                // bw.write(drawing.getName());
-                // bw.newLine();
-                
-            // }
-            // var path =  java.nio.file.Files.write(Path.of(fileName), listStrings, StandardCharsets.UTF_8);
-            //System.out.println("strings: " + " " + listStrings);
-            
     }
 
-
-    public static Drawing load(String fileName) throws IOException, 
-                                        FileNotFoundException{
-
+    public static Drawing load(String fileName) throws FileNotFoundException,  IOException{
     Drawing drawing = new Drawing();
             try {
+
+                fileName += ".shape";
+
                 Path path = Path.of(fileName);
                 List<String> data =  java.nio.file.Files.readAllLines(path);
                 
                String name = data.get(0);
                String author = data.get(1);
+
+                try {
+                    drawing.setName(name);
+                    drawing.setAuthor(author);
+
+                    
+                } catch (DrawingException e) {
+                    e.getMessage();
+                    e.printStackTrace();
+                    
+                }
                
                for (int i = 2; i < data.size(); i++) {
                     String info = data.get(i); // Rectangle,233,177,425,362,#0000ff
@@ -161,58 +147,18 @@ public class FileHandler {
                             break;
                         }
                     }
-
-                    
-
-                
                     // Kolla om först elementet i strängen är "Rectangle" eller "Circle"
                  
                   }
                   return drawing;
-              
-                
-    
-                // FileInputStream fileInPutStream = new FileInputStream("C");
-                // fileInPutStream.close();
-                // ObjectInputStream objectInputStream = new ObjectInputStream(fileInPutStream);
-                // Drawing drawing = (Drawing) objectInputStream.readObject();
-                // objectInputStream.close();
-                
-    
         
             } catch (FileNotFoundException e) {
                 // TODO: handle exception
                 System.err.println("Load failed:" + e.toString());
-               e.printStackTrace();
+                e.printStackTrace();
                return  null;  
-            
-                  
-     
         }
-            // drawing = (Drawing) in.readObject();
-            // in.close();
-
-            // FileReader fileReader = new FileReader(fileName);
-            // BufferedReader br = new BufferedReader( new BufferedReader(fileReader)); //läser från filen som läser hela blocket av data istället för en char eller byte i taget
-            // String row = br.readLine();
-
-            // BufferedReader reader = 
-            //     new BufferedReader(new FileReader(fileName));
-            // String row = reader.readLine();
-            
-            // System.out.println(row);
-            // while (row!=null) {
-            //     System.out.println(row);
-            //     row = reader.readLine();
-            // }
-            // reader.close();
-    
-            // List<Shape> drawingList = drawingList.
-        
     }
-            
-    
-
     
 }
 
