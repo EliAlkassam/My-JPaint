@@ -5,21 +5,21 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Image;
+//import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.nio.ReadOnlyBufferException;
+//import java.nio.ReadOnlyBufferException;
 import java.util.ArrayList;
-import java.util.function.Consumer;
+//import java.util.function.Consumer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-import javax.swing.border.Border;
+//import javax.swing.border.Border;
 
 /**
 	 * This class handles all componements (statusbar,combobox, and topPanel) for the window and presents them
@@ -37,7 +37,6 @@ public class JPaintFrame extends JFrame {
 	//exception
 	private String drawingTitle = "";
 
-	private String header;
 	private Container c = this.getContentPane();
 	private StatusBarPanel statusBarPanel;
 	private DrawingPanel drawingPanel;
@@ -49,7 +48,6 @@ public class JPaintFrame extends JFrame {
 	
 	@Override
 	public void setMinimumSize(Dimension minimumSize) {
-		// TODO Auto-generated method stub
 		super.setMinimumSize(minimumSize);
 	}
 	private void init() {
@@ -160,7 +158,6 @@ public class JPaintFrame extends JFrame {
 		 * 10.1 Initialisera StatusBarPanel
 		 * 10.2 Sätt en rimlig höjd på StatusBarPanel, exempelvis 25.
 		 */
-		// TODO
 		statusBarPanel = new StatusBarPanel();
 		statusBarPanel.setPreferredSize(new Dimension( 0,25));
 		
@@ -200,7 +197,6 @@ public class JPaintFrame extends JFrame {
 		/*
 		 * 13. Avslutningsvis, lägg till topPanel, drawingPanel och statusBarPanel till Container c.
 		 */
-		// TODO
 		c.add(topPanel, BorderLayout.NORTH);
 		c.add(drawingPanel, BorderLayout.CENTER);
 		c.add(statusBarPanel, BorderLayout.SOUTH);

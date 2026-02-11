@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
-    * ColorPalettePanel is a subclass of JPanel that overrides all methods from JPanel (except private ones).
-	* Contains 2 ctor where both handles the layout. The second ctor handles a ArrayList<ColorPanel> colorPanels, where it adds a 
-	  colorPanel ( a color) to the ArrayList  
-	* ColorPalettePanel is like a box of colors
-    
-    *
-    * @author elal2203
-    * @version 1.0 
-    */
-
-
+ * ColorPalettePanel is a subclass of JPanel that overrides all methods from
+ * JPanel (except private ones).
+ * Contains 2 ctor where both handles the layout. The second ctor handles a
+ * ArrayList<ColorPanel> colorPanels, where it adds a
+ * colorPanel ( a color) to the ArrayList
+ * ColorPalettePanel is like a box of colors
+ *
+ * 
+ * @author elal2203
+ * @version 1.0
+ */
 
 public class ColorPalettePanel extends JPanel {
 
@@ -26,14 +26,14 @@ public class ColorPalettePanel extends JPanel {
 	 * sätt att kunna anropa addMouseListener på respektive ColorPanel-
 	 * objekt som ColorPalettePanel håller. Detta kommer vi göra i metoden
 	 * setMouseListenerForColorPanels(MouseListener listener). Mer om detta nedan.
-	 * */
-	private ArrayList<ColorPanel> colorPanels; 
-	
-	
+	 */
+	private ArrayList<ColorPanel> colorPanels;
+
 	/*
 	 * Oavsett vilken constructor som anropas layout till ColorPalettePanel
-	 * sättas till GridLayout.*/
-	
+	 * sättas till GridLayout.
+	 */
+
 	/*
 	 * För denna constructor så ska listan colorPanels initialiseras.
 	 */
@@ -43,14 +43,14 @@ public class ColorPalettePanel extends JPanel {
 		colorPanels = new ArrayList<>();
 		setLayout(new GridLayout());
 	}
-	
+
 	/*
 	 * 
 	 * För denna constructor så skickas en ArrayList med ColorPanel-objekt,
-	 * vilket betyder att våran instansvariabel colorPanels initialiseras 
+	 * vilket betyder att våran instansvariabel colorPanels initialiseras
 	 * via constructorn parameter (dvs "this.colorPanels = colorPanels").
-	 * Om denna constructor anropas så måste varje ColorPanel-objekt som finns 
-	 * i listan läggas till denna klass genom att anropa add-metoden för 
+	 * Om denna constructor anropas så måste varje ColorPanel-objekt som finns
+	 * i listan läggas till denna klass genom att anropa add-metoden för
 	 * denna klass (så att de blir synliga).
 	 */
 	public ColorPalettePanel(ArrayList<ColorPanel> colorPanels) {
@@ -67,20 +67,20 @@ public class ColorPalettePanel extends JPanel {
 
 	/*
 	 * När addColorPanel anropas så ska det ColorPanel-objekt som
-	 * skickas som argument läggas till i listan colorPanels 
-	 * (detta för att enkelt kunna iterera över de ColorPanels som 
-	 * finns tillgängliga inom denna klass i samband med att en 
+	 * skickas som argument läggas till i listan colorPanels
+	 * (detta för att enkelt kunna iterera över de ColorPanels som
+	 * finns tillgängliga inom denna klass i samband med att en
 	 * MouseListener ska sättas).
 	 * Den ColorPanel som skickas som argument ska också grafiskt läggas
-	 * till denna klass genom att anropa add-metoden för denna klass 
+	 * till denna klass genom att anropa add-metoden för denna klass
 	 * (så att de blir synliga).
 	 */
 	public void addColorPanel(ColorPanel cp) {
 		// TODO
 		colorPanels.add(cp);
 
-		//läggs till i layouten /GIU
-		 add(cp);
+		// läggs till i layouten /GIU
+		add(cp);
 	}
 
 	/*
@@ -94,7 +94,7 @@ public class ColorPalettePanel extends JPanel {
 	public void setMouseListenerForColorPanels(MouseListener listener) {
 		// TODO
 		for (ColorPanel colorPanel : colorPanels) {
-			
+
 			colorPanel.addMouseListener(listener);
 		}
 	}

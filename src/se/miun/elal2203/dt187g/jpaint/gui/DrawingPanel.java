@@ -7,10 +7,6 @@ import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import javax.swing.JPanel;
 
 import se.miun.elal2203.dt187g.jpaint.Drawing;
@@ -20,32 +16,29 @@ import se.miun.elal2203.dt187g.jpaint.geometry.Rectangle;
 import se.miun.elal2203.dt187g.jpaint.geometry.Shape;
 
 /**
-	 * This class with 2 constructor handles the background, either by setting it as the given argument (Color background) in the second constructor
-	   or setting it white if no parameter is required (first ctor)
-	 * This class is the paint space for the user
-	 
-	   @author elal2203
-       @version 1.0 
-	 */
-
-
+ * This class with 2 constructor handles the background, either by setting it as
+ * the given argument (Color background) in the second constructor
+ * or setting it white if no parameter is required (first ctor)
+ * This class is the paint space for the user
+ * 
+ * @author elal2203
+ * @version 1.0
+ */
 
 public class DrawingPanel extends JPanel {
-	
+
 	private Drawing drawing;
 
 	private Color drawColor;
 	private boolean drawIsActive;
 	private String activeShape;
-	
+
 	private Predicate<Shape> shapeFilter;
-	
+
 	private int x1;
 	private int x2;
 	private int y1;
 	private int y2;
-
-
 
 	public DrawingPanel() {
 		drawing = new Drawing();
@@ -54,36 +47,35 @@ public class DrawingPanel extends JPanel {
 		activeShape = "Rectangle";
 		drawColor = Color.BLUE;
 	}
-	
+
 	public DrawingPanel(Color background) {
 		this();
 		setBackground(background);
 	}
 
-	public Drawing getDrawing() throws DrawingException{
-		
-		if (drawing == null ) {
-			throw new DrawingException("getDrawing(): Could not get drawing"); 
-		} 
+	public Drawing getDrawing() throws DrawingException {
+
+		if (drawing == null) {
+			throw new DrawingException("getDrawing(): Could not get drawing");
+		}
 		return drawing;
 	}
 
-	public void setDrawing(Drawing drawing) throws DrawingException{
+	public void setDrawing(Drawing drawing) throws DrawingException {
 
 		if (drawing == null) {
-			throw new DrawingException("Could not set Drawing"); 
+			throw new DrawingException("Could not set Drawing");
 		}
 		this.drawing = drawing;
 	}
-	
 
 	// Task 5
-	
-	public Color getDrawColor(){
+
+	public Color getDrawColor() {
 		return drawColor;
 	}
 
-	public void setdrawColor( Color color){
+	public void setdrawColor(Color color) {
 		this.drawColor = color;
 	}
 
@@ -91,60 +83,58 @@ public class DrawingPanel extends JPanel {
 		return drawIsActive;
 	}
 
-	public void setDrawIsActive(boolean active){
+	public void setDrawIsActive(boolean active) {
 		this.drawIsActive = active;
 	}
 
-	public String getActiveShapes(){
+	public String getActiveShapes() {
 		return activeShape;
 	}
 
-	public void setActiveShape(String shape){
+	public void setActiveShape(String shape) {
 		this.activeShape = shape;
 	}
 
-	public void setStartPoint(int x1, int y1){
+	public void setStartPoint(int x1, int y1) {
 		this.x1 = x1;
 		this.y1 = y1;
 	}
 
-	public void setEndPoint(int x2, int y2){
+	public void setEndPoint(int x2, int y2) {
 		this.x2 = x2;
 		this.y2 = y2;
 	}
 
-	public void removeShape(int index){
+	public void removeShape(int index) {
 		drawing.removeShape(index);
+		repaint();
 	}
 
-	// Freee
-
-	public void setShapeFilter(Predicate<Shape> shapeFilter){
+	public void setShapeFilter(Predicate<Shape> shapeFilter) {
 		this.shapeFilter = shapeFilter;
 		repaint();
 	}
-	
+
 	public void addShape() {
 		switch (activeShape) {
-		case "Rectangle":
-			Point rectStart = new Point(x1 < x2 ? x1 : x2, y1 < y2 ? y1 : y2);
-			Point rectEnd = new Point(x1 > x2 ? x1 : x2, y1 > y2 ? y1 : y2);
-			Shape rect = new Rectangle(rectStart, getColorAsHexString(drawColor));
-			rect.addPoint(rectEnd);
-			drawing.addShape(rect);
-			break;
-		case "Circle":
-			Point circleStart = new Point(x1, y1);
-			Point circleEnd = new Point(x2, y1);
-			Shape circle = new Circle(circleStart, getColorAsHexString(drawColor));
-			circle.addPoint(circleEnd);
-			drawing.addShape(circle);
-			break;
-		default:
-			break;
+			case "Rectangle":
+				Point rectStart = new Point(x1 < x2 ? x1 : x2, y1 < y2 ? y1 : y2);
+				Point rectEnd = new Point(x1 > x2 ? x1 : x2, y1 > y2 ? y1 : y2);
+				Shape rect = new Rectangle(rectStart, getColorAsHexString(drawColor));
+				rect.addPoint(rectEnd);
+				drawing.addShape(rect);
+				break;
+			case "Circle":
+				Point circleStart = new Point(x1, y1);
+				Point circleEnd = new Point(x2, y1);
+				Shape circle = new Circle(circleStart, getColorAsHexString(drawColor));
+				circle.addPoint(circleEnd);
+				drawing.addShape(circle);
+				break;
+			default:
+				break;
 		}
 	}
-
 
 	private void drawRect(Graphics2D g2) {
 		java.awt.Shape rect = new java.awt.Rectangle(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x1 - x2),
@@ -158,72 +148,39 @@ public class DrawingPanel extends JPanel {
 		g2.fill(circle);
 	}
 
-
 	@Override
 	public void paintComponent(Graphics g) {
-		
+
 		super.paintComponent(g);
-		
+
 		Graphics2D g2 = (Graphics2D) g;
-		// om shapeFilter inte är null
-		
+		List<Shape> streamShapes = drawing.getShapes();
+		streamShapes.stream().filter(shapeFilter).forEach(s -> s.draw(g2));
 
-			// gör en lista av shape som hämtar alla shapes från drawing o gör till en stream
-			// filtrera efter predicate shapeFilter
-			// för varje shape i shapeFilter -ritaq
-		
-			List<Shape> streamShapes = drawing.getShapes();
-			streamShapes.stream().
-						filter(shapeFilter).
-						forEach(s-> s.draw(g2));
-
-			
-
-		
-			// streamShapes.forEach(s -> s.draw(g));
-			//   //  	System.out.println("här" + streamShapes);
-			//   //  	streamShapes = streamShapes.filter()
-
-		
-		
-		// 	streamShapes.stream()
-		// 	.filter(shapeFilter);
-		// 	.collect((Collectors.toList()));
-		
-		// 	if (shapeFilter != null) {
-			//   //  	streamShapes = streamShapes.filter()
-			// 		  streamShapes.forEach(s -> s.draw(g));
-			//   //  	System.out.println("här" + streamShapes);
-			// 	}
-			
-		//var e = shapeFilter ? streamShapes.forEach(s -> s.draw(g)) : drawing.draw(g);
-				
-			
-		//drawing.draw(g);
 		if (drawIsActive) {
 			g2.setColor(drawColor);
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			switch (activeShape) {
-			case "Rectangle":
-				drawRect(g2);
-				break;
-			case "Circle":
-				drawCircle(g2);
-				break;
-			default:
-				break;
+				case "Rectangle":
+					drawRect(g2);
+					break;
+				case "Circle":
+					drawCircle(g2);
+					break;
+				default:
+					break;
 			}
 		}
 	}
 
 	public static String getColorAsHexString(Color color) {
-			
+
 		String red = Integer.toHexString(color.getRed());
 		String green = Integer.toHexString(color.getGreen());
 		String blue = Integer.toHexString(color.getBlue());
-		red = red.length() == 1 ? "0"+red : red;
-		green = green.length() == 1 ? "0"+green : green;
-		blue = blue.length() == 1 ? "0"+blue : blue;
+		red = red.length() == 1 ? "0" + red : red;
+		green = green.length() == 1 ? "0" + green : green;
+		blue = blue.length() == 1 ? "0" + blue : blue;
 
 		return "#" + red + green + blue;
 	}
